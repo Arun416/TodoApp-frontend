@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl:"http://localhost:7000/api"
+  // apiUrl:"http://localhost:7000/api"
+  apiUrl: "https://todoapp-backend-gfi5.onrender.com/api"
 };
 
 /*
