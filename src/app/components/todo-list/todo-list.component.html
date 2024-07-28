@@ -1,0 +1,78 @@
+<!-- <p class="left text-black">You have {{todos.length}} pending tasks</p> -->
+
+<div class="container">
+
+    <!-- <h5 class="center teal-text text-lighten-2">{{currentDate |date: 'dd/MM/yyyy hh:mm a'}}</h5><br/> -->
+    <h1>MyTodo List App</h1>
+    <hr/>
+    <h6>You have {{todos.length - completedTodosList.length}} Pending tasks!!!</h6>
+            
+
+    <form class="todo-form" #todoform="ngForm" (ngSubmit)="onSubmit(todoform)">
+        <div class="row">
+          <div class="input-field col s9">
+            <input type="text" autofocus   name="title" id="title" ngModel required>
+            <label for="title">Enter Task</label>
+          </div>
+          <div class="input-field col s3">
+            <button [disabled]="todoform.invalid" type="submit" class="btn waves-effect waves-light"><i class="material-icons inline-icon">add</i>Add</button>
+          </div>
+        </div>
+    </form>
+
+    <div *ngIf="UncompletedTodos.length>0;else noUncompletedTodos">
+    <ul class="todo-list " *ngFor="let todo of UncompletedTodos;index as i">
+        <li class="blue-grey lighten-5">
+          <div>
+          <div class="todo-checkbox">
+           
+            <label class="blue-grey-text text-darken-4">
+              <input *ngIf="!isEditTodo[i]" type="checkbox" class="filled-in" (change)="onCompleted(todo,todo._id)"/>
+              <span *ngIf="!isEditTodo[i]" class="teal-text text-darken-3"> {{todo.title}} 
+              </span> &nbsp;
+              <span *ngIf="!isEditTodo[i]">{{todo.createdAt |date: 'dd/MM/yyyy hh:mm a'}}</span>
+            </label>
+            <span *ngIf="isEditTodo[i]">
+             <input type="text" [(ngModel)]="todo.title"/> 
+          </span>
+          </div>
+          <div class="todo-buttons">
+              <button class="btn-floating waves-effect waves-light" (click)="onEditTodo(todo._id,i)"><i class="material-icons inline-icon">edit</i>  edit</button>
+              <button class="btn-floating waves-effect waves-light red darken-1" (click)="showDeleteConfirm(todo._id)">
+                <i class="material-icons inline-icon">delete</i>  delete</button> 
+          </div>
+        </div>
+        </li>
+    </ul>
+   
+    </div>
+    <ng-template  class="msg" #noUncompletedTodos>
+      Your Todo List is Empty!
+    </ng-template>
+    
+    <hr>
+    <br>
+    <ng-container *ngIf="completedTodosList.length>0">
+    <h1 id="completed-tasks" class="teal-text text-lighten-2">Completed Tasks</h1>
+    <hr>
+    <ul class="todo-list" *ngFor="let todo of completedTodosList">
+        <li class="blue-grey lighten-5">
+          <div>
+          <div class="todo-checkbox">
+            <label class="blue-grey-text text-darken-4">
+              <input type="checkbox" class="filled-in" [checked]="todo.isComplete" (click)="onUndoFromComplete(todo,todo._id)"/>
+              <span class="teal-text text-darken-3" [ngClass]="{'completedToho':'todo.isComplete'}"> {{todo.title}}</span>
+              &nbsp;
+              <span>{{todo.createdAt | date: 'dd/MM/yyyy hh:mm a'}}</span>
+            </label>
+          </div>
+          <div class="todo-buttons">
+            <button class="btn-floating waves-effect waves-light red darken-1"
+            (click)="onDelCompletedTodo(todo._id)"><i class="material-icons inline-icon">delete</i>  delete</button> 
+          </div>
+        </div>
+        </li>
+    
+      </ul></ng-container>
+  </div>
+  
